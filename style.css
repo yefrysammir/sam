@@ -31,7 +31,7 @@ body{
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   -webkit-font-smoothing:antialiased;
   -webkit-tap-highlight-color: transparent;
-  overflow: hidden; /* NO scroll en body; solo #muro scrollea */
+  overflow: hidden; /* NO scroll en body; solo #muroScroll scrollea */
 }
 
 /* Material Symbols */
@@ -46,7 +46,7 @@ body{
   height: calc(env(safe-area-inset-top,0) + 56px);
   padding: calc(env(safe-area-inset-top,0) + 6px) 12px 6px 12px;
   display:flex; align-items:center; justify-content:space-between;
-  z-index:120;
+  z-index:1200;
   background: transparent;
   backdrop-filter: none;
   transition: background .22s ease, backdrop-filter .22s ease;
@@ -54,6 +54,7 @@ body{
 .navbar.scrolled{
   background: var(--nav-blur-bg);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(0,0,0,0.04);
 }
 .icon-btn{ background:none; border:0; font-size:24px; cursor:pointer; color:var(--text); padding:6px; border-radius:8px; }
@@ -61,26 +62,24 @@ body{
 .verified{ color:var(--accent); font-size:20px; }
 
 /* Side menu + overlay */
-.side-menu{ position: fixed; top:0; left:-280px; width:280px; height:100%; background:var(--bg); z-index:130; padding-top:80px; box-shadow: 2px 0 18px rgba(0,0,0,0.12); transition:left .28s cubic-bezier(.2,.9,.3,1); }
+.side-menu{ position: fixed; top:0; left:-280px; width:280px; height:100%; background:var(--bg); z-index:1300; padding-top:80px; box-shadow: 2px 0 18px rgba(0,0,0,0.12); transition:left .28s cubic-bezier(.2,.9,.3,1); }
 .side-menu.open{ left:0; }
 .side-menu ul{ list-style:none; padding:0; margin:0; }
 .side-menu a{ display:block; padding:14px 18px; color:var(--text); text-decoration:none; border-bottom:1px solid rgba(0,0,0,0.04); }
-.overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:125; display:none; }
+.overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:1250; display:none; }
 .overlay.show{ display:block }
 
 /* HERO: portada + avatar + texts */
 .hero{
   position:absolute; inset:0 0 auto 0;
-  z-index:110; /* encima del muro para verse inicialmente */
+  z-index:1100; /* encima del muro para verse inicialmente */
   pointer-events:none;
   opacity: var(--hero-opacity);
   filter: blur(var(--hero-blur));
   transition: opacity .22s ease, filter .22s ease;
 }
-
-/* Cover */
 .hero-cover{ position:relative; height:220px; overflow:hidden; pointer-events:none; }
-.cover-img{ width:100%; height:120%; object-fit:cover; transform:translateY(0); will-change: transform; }
+.cover-img{ width:100%; height:120%; object-fit:cover; transform:translateY(0); will-change: transform; display:block; }
 .cover-overlay{ position:absolute; inset:0; background: linear-gradient(to bottom, rgba(0,0,0,0.45), transparent 40%, rgba(0,0,0,0.35)); pointer-events:none; }
 
 /* hero inner (avatar + texts + info) */
@@ -92,7 +91,7 @@ body{
 .bio{ margin:0; color:var(--subtext); font-size:13px; }
 
 /* info box separated: left (text) and right (icons) */
-.info-box{ width:100%; max-width:920px; display:flex; justify-content:space-between; gap:16px; align-items:center; margin-top:12px; padding: 0 12px; pointer-events:auto; }
+.info-box{ width:100%; max-width:920px; display:flex; justify-content:space-between; gap:16px; align-items:center; margin-top:12px; padding: 0 12px; pointer-events:auto; flex-wrap:wrap; }
 .info-left{ display:flex; gap:10px; align-items:center; }
 .info-left .info-item{ display:flex; gap:8px; align-items:center; background: rgba(0,0,0,0.06); padding:8px 10px; border-radius:10px; font-size:13px; color:var(--text); }
 .info-left .info-item svg{ width:16px; height:16px; opacity:.9; }
@@ -104,7 +103,7 @@ body{
 /* Muro (FIXED) -> éste es el único scrolleo */
 .muro{ position:fixed; top:0; left:0; right:0; bottom:0; overflow:hidden; z-index:100; pointer-events:auto; }
 /* dentro de muro habrá un área scrolleable: .muro-scroll */
-.muro-scroll{ position:absolute; inset:0; top:var(--navbar-h); overflow-y:auto; -webkit-overflow-scrolling:touch; padding-top: var(--hero-h); background: transparent; }
+.muro-scroll{ position:absolute; left:0; right:0; bottom:0; top:var(--navbar-h); overflow-y:auto; -webkit-overflow-scrolling:touch; padding-top: var(--hero-h); background: transparent; }
 
 /* pull-to-refresh (dentro de scroller) */
 .ptr{ height:0; overflow:hidden; display:flex; align-items:flex-end; justify-content:center; }
@@ -115,7 +114,7 @@ body{
 .ptr.loading #ptrIcon{ display:none; }
 .ptr.loading .ptr-spinner{ display:block; }
 
-/* muro-top sticky inside the scroller */
+/* muro-top sticky inside the scroller (se pegará a top del scroller) */
 .muro-top{ position: sticky; top: 0; z-index: 6; display:flex; align-items:center; justify-content:center; padding: 8px 12px; background: transparent; }
 .muro-title{ display:flex; align-items:center; gap:8px; color:var(--subtext); margin:0; padding:6px 8px; border-radius:10px; }
 
