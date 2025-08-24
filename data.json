@@ -1,0 +1,31 @@
+{
+  "usuario": "@yefry",
+  "verificado": true,
+  "nombre": "Yefry Sammir",
+  "descripcion": "Apasionado de la tecnología y el diseño. Café ☕ y PWA 🚀",
+  "avatar": "https://i.pravatar.cc/300",
+  "portada": "https://picsum.photos/id/1015/1200/600",
+  "info": {
+    "ciudad": "Lima, Perú",
+    "web": "tusitio.example"
+  },
+  "socials": [
+    { "type": "Instagram", "label": "Instagram", "url": "https://instagram.com/tuusuario" },
+    { "type": "TikTok", "label": "TikTok", "url": "https://tiktok.com/@tuusuario" },
+    { "type": "Facebook", "label": "Facebook", "url": "https://facebook.com/tuusuario" },
+    { "type": "Discord", "label": "Discord", "url": "https://discord.gg/tu-servidor" },
+    { "type": "Web", "label": "Web", "url": "https://tusitio.example" }
+  ],
+  "publicaciones": [
+    {
+      "texto": "Probando parallax + blur + sticky navbar (estilo Twitter).",
+      "fecha": "2025-08-23T18:15:00-05:00",
+      "imagen": "https://picsum.photos/700/380?random=1"
+    },
+    {
+      "texto": "Video demo con controles y audio",
+      "fecha": "2025-08-22T14:00:00-05:00",
+      "video": "https://www.w3schools.com/html/mov_bbb.mp4"
+    }
+  ]
+}

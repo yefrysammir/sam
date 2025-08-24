@@ -1,0 +1,133 @@
+:root{
+  --bg: #ffffff;
+  --muted: #f4f4f4;
+  --text: #111111;
+  --subtext: #666666;
+  --accent: #1da1f2;
+  --nav-blur-bg: rgba(255,255,255,0.60);
+
+  --hero-h: 360px;   /* recalculado por JS */
+  --navbar-h: 56px;  /* recalculado por JS */
+  --hero-opacity: 1;
+  --hero-blur: 0px;
+}
+
+/* dark */
+:root[data-theme="dark"]{
+  --bg: #0f1112;
+  --muted: #151617;
+  --text: #f3f3f3;
+  --subtext: #b7b7b7;
+  --accent: #7fc3ff;
+  --nav-blur-bg: rgba(17,17,17,0.60);
+}
+
+/* base */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden; /* NO scroll en body; solo #muro scrollea */
+}
+
+/* Material Symbols */
+.material-symbols-outlined{
+  font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 24;
+}
+
+/* Navbar */
+.navbar{
+  position: fixed;
+  top:0; left:0; right:0;
+  height: calc(env(safe-area-inset-top,0) + 56px);
+  padding: calc(env(safe-area-inset-top,0) + 6px) 12px 6px 12px;
+  display:flex; align-items:center; justify-content:space-between;
+  z-index:120;
+  background: transparent;
+  backdrop-filter: none;
+  transition: background .22s ease, backdrop-filter .22s ease;
+}
+.navbar.scrolled{
+  background: var(--nav-blur-bg);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+.icon-btn{ background:none; border:0; font-size:24px; cursor:pointer; color:var(--text); padding:6px; border-radius:8px; }
+.navbar-center{ display:flex; align-items:center; gap:6px; font-weight:600; pointer-events:none; }
+.verified{ color:var(--accent); font-size:20px; }
+
+/* Side menu + overlay */
+.side-menu{ position: fixed; top:0; left:-280px; width:280px; height:100%; background:var(--bg); z-index:130; padding-top:80px; box-shadow: 2px 0 18px rgba(0,0,0,0.12); transition:left .28s cubic-bezier(.2,.9,.3,1); }
+.side-menu.open{ left:0; }
+.side-menu ul{ list-style:none; padding:0; margin:0; }
+.side-menu a{ display:block; padding:14px 18px; color:var(--text); text-decoration:none; border-bottom:1px solid rgba(0,0,0,0.04); }
+.overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:125; display:none; }
+.overlay.show{ display:block }
+
+/* HERO: portada + avatar + texts */
+.hero{
+  position:absolute; inset:0 0 auto 0;
+  z-index:110; /* encima del muro para verse inicialmente */
+  pointer-events:none;
+  opacity: var(--hero-opacity);
+  filter: blur(var(--hero-blur));
+  transition: opacity .22s ease, filter .22s ease;
+}
+
+/* Cover */
+.hero-cover{ position:relative; height:220px; overflow:hidden; pointer-events:none; }
+.cover-img{ width:100%; height:120%; object-fit:cover; transform:translateY(0); will-change: transform; }
+.cover-overlay{ position:absolute; inset:0; background: linear-gradient(to bottom, rgba(0,0,0,0.45), transparent 40%, rgba(0,0,0,0.35)); pointer-events:none; }
+
+/* hero inner (avatar + texts + info) */
+.hero-inner{ position:relative; display:flex; flex-direction:column; align-items:center; transform: translateY(-36px); pointer-events:none; }
+.avatar-wrap{ pointer-events:auto; display:flex; justify-content:center; align-items:center; }
+.avatar{ width:112px; height:112px; border-radius:50%; border:4px solid var(--bg); object-fit:cover; box-shadow: 0 10px 30px rgba(0,0,0,0.18); }
+.perfil-text{ text-align:center; margin-top:10px; pointer-events:auto; color:var(--text); }
+.full-name{ margin:4px 0 6px; font-size:18px; font-weight:700; }
+.bio{ margin:0; color:var(--subtext); font-size:13px; }
+
+/* info box separated: left (text) and right (icons) */
+.info-box{ width:100%; max-width:920px; display:flex; justify-content:space-between; gap:16px; align-items:center; margin-top:12px; padding: 0 12px; pointer-events:auto; }
+.info-left{ display:flex; gap:10px; align-items:center; }
+.info-left .info-item{ display:flex; gap:8px; align-items:center; background: rgba(0,0,0,0.06); padding:8px 10px; border-radius:10px; font-size:13px; color:var(--text); }
+.info-left .info-item svg{ width:16px; height:16px; opacity:.9; }
+
+.info-right{ display:flex; gap:8px; align-items:center; }
+.info-right .social{ width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:8px; background: rgba(0,0,0,0.06); }
+.info-right .social svg{ width:18px; height:18px; }
+
+/* Muro (FIXED) -> éste es el único scrolleo */
+.muro{ position:fixed; top:0; left:0; right:0; bottom:0; overflow:hidden; z-index:100; pointer-events:auto; }
+/* dentro de muro habrá un área scrolleable: .muro-scroll */
+.muro-scroll{ position:absolute; inset:0; top:var(--navbar-h); overflow-y:auto; -webkit-overflow-scrolling:touch; padding-top: var(--hero-h); background: transparent; }
+
+/* pull-to-refresh (dentro de scroller) */
+.ptr{ height:0; overflow:hidden; display:flex; align-items:flex-end; justify-content:center; }
+.ptr-inner{ height:64px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:var(--subtext); }
+.ptr-spinner{ width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(127,127,127,.35);border-top-color:var(--accent); display:none; animation: spin .9s linear infinite; }
+@keyframes spin{ to{ transform: rotate(360deg);} }
+.ptr.ready #ptrIcon{ transform: rotate(180deg); }
+.ptr.loading #ptrIcon{ display:none; }
+.ptr.loading .ptr-spinner{ display:block; }
+
+/* muro-top sticky inside the scroller */
+.muro-top{ position: sticky; top: 0; z-index: 6; display:flex; align-items:center; justify-content:center; padding: 8px 12px; background: transparent; }
+.muro-title{ display:flex; align-items:center; gap:8px; color:var(--subtext); margin:0; padding:6px 8px; border-radius:10px; }
+
+/* posts container inside the scroller */
+.posts{ padding: 10px 14px 40px; }
+.post{ background:var(--muted); border-radius:12px; padding:12px; margin-bottom:12px; box-shadow: 0 8px 22px rgba(0,0,0,0.06); }
+.post .fecha{ font-size:12px; color:var(--subtext); margin-bottom:6px; }
+.post .texto{ font-size:15px; line-height:1.45; color:var(--text); }
+.post img, .post video{ width:100%; border-radius:10px; margin-top:10px; display:block; background:#000; }
+
+/* small responsive */
+@media(min-width:900px){
+  .avatar{ width:132px; height:132px; }
+  .info-right .social{ width:40px; height:40px; }
+}
