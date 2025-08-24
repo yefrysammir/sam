@@ -1,5 +1,5 @@
 async function loadPosts() {
-  const res = await fetch("posts.json");
+  const res = await fetch("data.json");
   const posts = await res.json();
   const feed = document.getElementById("feed");
   feed.innerHTML = "";
