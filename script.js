@@ -16,8 +16,9 @@ const infoRight = document.getElementById('infoRight');
 
 const hero = document.getElementById('hero');
 const muro = document.getElementById('muro');   // contenedor fijo
-let scroller; // será .muro-scroll (creado en boot)
+let scroller = document.getElementById('muroScroll'); // el elemento que scrollea (existe en HTML)
 const ptr = document.getElementById('ptr');
+const ptrIcon = document.getElementById('ptrIcon');
 const ptrText = document.getElementById('ptrText');
 const ptrSpinner = document.getElementById('ptrSpinner');
 const postsEl = document.getElementById('posts');
@@ -42,6 +43,19 @@ function openMenu(){ sideMenu.classList.add('open'); overlay.classList.add('show
 function closeMenu(){ sideMenu.classList.remove('open'); overlay.classList.remove('show'); setTimeout(()=> overlay.hidden = true, 300); sideMenu.setAttribute('aria-hidden','true'); }
 document.addEventListener('keydown', (e)=> { if (e.key === 'Escape') closeMenu(); });
 
+/* ---------- Helpers ---------- */
+function escapeHtml(str=''){ return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
+function capitalize(s=''){ if (!s) return ''; return s.charAt(0).toUpperCase()+s.slice(1); }
+
+/* wait for set of images to load (or error) */
+function waitForImages(imgs){
+  return Promise.all(imgs.map(img => {
+    if (!img) return Promise.resolve();
+    if (img.complete) return Promise.resolve();
+    return new Promise(res => { img.addEventListener('load', res); img.addEventListener('error', res); });
+  }));
+}
+
 /* ---------- Cargar data.json ---------- */
 async function cargarDatos(){
   try{
@@ -50,14 +64,14 @@ async function cargarDatos(){
     const data = await res.json();
 
     // header / verified
-    usernameTop.textContent = data.usuario || '@usuario';
-    verifiedTop.style.display = data.verificado ? 'inline-flex' : 'none';
+    if (usernameTop) usernameTop.textContent = data.usuario || '@usuario';
+    if (verifiedTop) verifiedTop.style.display = data.verificado ? 'inline-flex' : 'none';
 
-    // hero content
-    coverImg.src = data.portada || '';
-    avatarImg.src = data.avatar || '';
-    fullNameEl.textContent = data.nombre || '';
-    bioEl.textContent = data.descripcion || '';
+    // hero content (asignamos src primero)
+    if (coverImg) coverImg.src = data.portada || '';
+    if (avatarImg) avatarImg.src = data.avatar || '';
+    if (fullNameEl) fullNameEl.textContent = data.nombre || '';
+    if (bioEl) bioEl.textContent = data.descripcion || '';
 
     // info (left = location/site; right = socials icons only)
     renderInfo(data);
@@ -65,8 +79,9 @@ async function cargarDatos(){
     // posts
     renderPosts(data.publicaciones || []);
 
-    // recalcular alturas y vars
-    requestAnimationFrame(recalcularAlturas);
+    // recalcular alturas y vars (se espera a imágenes fuera)
+    await waitForImages([coverImg, avatarImg]);
+    recalcularAlturas();
   } catch(err){
     console.error('cargarDatos error', err);
   }
@@ -74,6 +89,7 @@ async function cargarDatos(){
 
 /* ---------- Render info (separado) ---------- */
 function renderInfo(data){
+  if (!infoLeft || !infoRight) return;
   infoLeft.innerHTML = '';
   infoRight.innerHTML = '';
 
@@ -126,6 +142,7 @@ function svgLocation(){ return `<svg viewBox="0 0 24 24" fill="none" xmlns="http
 
 /* ---------- Render posts ---------- */
 function renderPosts(posts){
+  if (!postsEl) return;
   postsEl.innerHTML = '';
   posts.forEach(p=>{
     const article = document.createElement('article');
@@ -163,44 +180,36 @@ function tiempoRelativo(fechaStr){
   return fecha.toLocaleDateString('es-PE',{day:'2-digit',month:'2-digit',year:'2-digit'});
 }
 
-/* ---------- Recalcular alturas y crear scroller interno ---------- */
+/* ---------- Recalcular alturas ---------- */
 function recalcularAlturas(){
   requestAnimationFrame(()=>{
+    if (!hero) return;
     const heroRect = hero.getBoundingClientRect();
-    const heroH = Math.max(260, Math.round(heroRect.height));
+    const heroH = Math.max(240, Math.round(heroRect.height));
     const navbarRect = document.getElementById('navbar').getBoundingClientRect();
     const navbarH = Math.max(56, Math.round(navbarRect.height));
     root.style.setProperty('--hero-h', `${heroH}px`);
     root.style.setProperty('--navbar-h', `${navbarH}px`);
 
-    // Si no existe .muro-scroll lo creamos (estructura: #muro > .muro-scroll > ptr + muro-top + posts)
-    if (!muro.querySelector('.muro-scroll')){
-      const scroll = document.createElement('div');
-      scroll.className = 'muro-scroll';
-      // move existing ptr, muro-top and posts into it
-      const ptrNode = document.getElementById('ptr');
-      const muroTop = muro.querySelector('.muro-top');
-      const posts = document.getElementById('posts');
-      scroll.appendChild(ptrNode);
-      scroll.appendChild(muroTop);
-      scroll.appendChild(posts);
-      muro.appendChild(scroll);
+    // ensure scroller exists
+    if (!scroller){
+      scroller = document.getElementById('muroScroll');
+      if (!scroller) return;
     }
 
-    scroller = muro.querySelector('.muro-scroll');
-    // ensure padding-top equals hero height so posts start below hero
+    // set scroller top and padding so posts start below hero and scroller begins under navbar
+    scroller.style.top = `${navbarH}px`;
     scroller.style.paddingTop = `${heroH}px`;
-    // ensure muro top offset equals navbar height
-    muro.style.top = `0px`; // muro is fixed to viewport; the scroller handles top offset
   });
 }
 
 /* ---------- Scroll effects (attach to scroller) ---------- */
 function initScrollEffects(){
-  if (!scroller) scroller = muro.querySelector('.muro-scroll');
+  if (!scroller) scroller = document.getElementById('muroScroll');
+  if (!scroller) return;
+
   const PARALLAX_RATIO = 0.35;
   const thresholdPadding = 8;
-
   let lastStuck = false;
 
   scroller.addEventListener('scroll', () => {
@@ -210,7 +219,7 @@ function initScrollEffects(){
     const threshold = Math.max(0, heroH - navbarHeight - thresholdPadding);
 
     // parallax of cover image
-    coverImg.style.transform = `translateY(${ - (y * PARALLAX_RATIO) }px)`;
+    if (coverImg) coverImg.style.transform = `translateY(${ - (y * PARALLAX_RATIO) }px)`;
 
     // opacity & blur
     const p = Math.min(1, y / Math.max(120, heroH * 0.55));
@@ -243,7 +252,9 @@ function initScrollEffects(){
 
 /* ---------- Pull to refresh (attached to scroller) ---------- */
 function initPullToRefresh(){
-  if (!scroller) scroller = muro.querySelector('.muro-scroll');
+  if (!scroller) scroller = document.getElementById('muroScroll');
+  if (!scroller) return;
+
   const MAX = 110, THRESH = 70;
   let startY=0, pulling=false, pulled=0;
 
@@ -257,12 +268,12 @@ function initPullToRefresh(){
     if (dy > 0){
       e.preventDefault(); // prevent native overscroll
       pulled = Math.min(dy, MAX);
-      ptr.style.height = `${pulled}px`;
+      if (ptr) ptr.style.height = `${pulled}px`;
       // slight visual move of muro-top
       const muroTop = scroller.querySelector('.muro-top');
       if (muroTop) muroTop.style.transform = `translateY(${pulled * 0.12}px)`;
-      if (pulled >= THRESH){ ptr.classList.add('ready'); ptrText.textContent = 'Suelta para actualizar'; }
-      else { ptr.classList.remove('ready'); ptrText.textContent = 'Desliza para actualizar'; }
+      if (pulled >= THRESH){ ptr.classList.add('ready'); if (ptrText) ptrText.textContent = 'Suelta para actualizar'; }
+      else { ptr.classList.remove('ready'); if (ptrText) ptrText.textContent = 'Desliza para actualizar'; }
     }
   }, { passive:false });
 
@@ -271,20 +282,20 @@ function initPullToRefresh(){
     pulling = false;
     if (pulled >= THRESH){
       ptr.classList.remove('ready'); ptr.classList.add('loading');
-      ptrText.textContent = 'Actualizando…';
-      ptrSpinner.style.display = 'block';
+      if (ptrText) ptrText.textContent = 'Actualizando…';
+      if (ptrSpinner) ptrSpinner.style.display = 'block';
       try { await cargarDatos(); } catch(e){ console.warn(e); }
       setTimeout(()=> {
         ptr.classList.remove('loading');
-        ptr.style.height = '0px';
+        if (ptr) ptr.style.height = '0px';
         const muroTop = scroller.querySelector('.muro-top');
         if (muroTop) muroTop.style.transform = 'translateY(0)';
-        ptrText.textContent = 'Desliza para actualizar';
-        ptrSpinner.style.display = 'none';
+        if (ptrText) ptrText.textContent = 'Desliza para actualizar';
+        if (ptrSpinner) ptrSpinner.style.display = 'none';
       }, 350);
     } else {
       ptr.classList.remove('ready');
-      ptr.style.height = '0px';
+      if (ptr) ptr.style.height = '0px';
       const muroTop = scroller.querySelector('.muro-top');
       if (muroTop) muroTop.style.transform = 'translateY(0)';
     }
@@ -299,19 +310,21 @@ function initSW(){
   }
 }
 
-/* ---------- Helpers ---------- */
-function escapeHtml(str=''){ return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
-function capitalize(s=''){ if (!s) return ''; return s.charAt(0).toUpperCase()+s.slice(1); }
-
 /* ---------- Boot ---------- */
 document.addEventListener('DOMContentLoaded', async ()=>{
+  // ensure scroller ref (exists in index.html)
+  scroller = document.getElementById('muroScroll');
+
+  // load data and then wait for images
   await cargarDatos();
+
+  // recalc heights (already called in cargarDatos after images), but ensure again on boot
   recalcularAlturas();
-  // scroller is created inside recalcularAlturas -> wait a tick
-  setTimeout(()=>{
-    if (!muro.querySelector('.muro-scroll')) recalcularAlturas();
-    initScrollEffects();
-    initPullToRefresh();
-    initSW();
-  }, 80);
+
+  // attach scroller listeners
+  initScrollEffects();
+  initPullToRefresh();
+
+  // service worker registration
+  initSW();
 });
