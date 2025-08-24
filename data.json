@@ -1,19 +1,31 @@
-[
-  {
-    "type": "text",
-    "text": "Hola mundo desde mi muro personal 🚀",
-    "date": "2025-08-22T22:00:00"
+{
+  "usuario": "@yefrysammir",
+  "verificado": true,
+  "nombre": "Yefry Sammir",
+  "descripcion": "Apasionado de la tecnología y el diseño. Café ☕ y PWA 🚀",
+  "avatar": "https://i.pravatar.cc/300",
+  "portada": "https://picsum.photos/id/1015/1200/600",
+  "info": {
+    "ciudad": "Lima, Perú",
+    "web": "tusitio.example"
   },
-  {
-    "type": "image",
-    "text": "Una foto genial!",
-    "url": "foto.jpg",
-    "date": "2025-08-21T18:00:00"
-  },
-  {
-    "type": "video",
-    "text": "Un recuerdo en video",
-    "url": "video.mp4",
-    "date": "2025-07-15T12:00:00"
-  }
-]
+  "socials": [
+    { "type": "Instagram", "label": "Instagram", "url": "https://instagram.com/tuusuario" },
+    { "type": "TikTok", "label": "TikTok", "url": "https://tiktok.com/@tuusuario" },
+    { "type": "Facebook", "label": "Facebook", "url": "https://facebook.com/tuusuario" },
+    { "type": "Discord", "label": "Discord", "url": "https://discord.gg/tu-servidor" },
+    { "type": "Web", "label": "Web", "url": "https://tusitio.example" }
+  ],
+  "publicaciones": [
+    {
+      "texto": "Probando parallax + blur + sticky navbar (estilo Twitter).",
+      "fecha": "2025-08-23T18:15:00-05:00",
+      "imagen": "https://picsum.photos/700/380?random=1"
+    },
+    {
+      "texto": "Video demo con controles y audio",
+      "fecha": "2025-08-22T14:00:00-05:00",
+      "video": "https://www.w3schools.com/html/mov_bbb.mp4"
+    }
+  ]
+}
