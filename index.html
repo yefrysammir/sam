@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-  <!-- Material Symbols -->
+  <!-- Material Symbols (Outlined wght 300) -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300" rel="stylesheet" />
 
   <link rel="manifest" href="manifest.json" />
@@ -27,18 +27,20 @@
   </nav>
   <div id="overlay" class="overlay" hidden></div>
 
-  <!-- Navbar -->
-  <header class="navbar" id="navbar">
-    <button id="menuBtn" class="icon-btn material-symbols-outlined">menu</button>
-    <div class="navbar-center">
+  <!-- Navbar fija -->
+  <header class="navbar" id="navbar" role="banner" aria-label="Barra superior">
+    <button id="menuBtn" class="icon-btn material-symbols-outlined" aria-label="Abrir menú">menu</button>
+
+    <div class="navbar-center" aria-hidden="false">
       <span id="usernameTop" class="username">@usuario</span>
-      <span id="verifiedTop" class="material-symbols-outlined verified">verified</span>
+      <span id="verifiedTop" class="material-symbols-outlined verified" aria-hidden="true">verified</span>
     </div>
-    <button id="themeToggle" class="icon-btn material-symbols-outlined">dark_mode</button>
+
+    <button id="themeToggle" class="icon-btn material-symbols-outlined" aria-label="Cambiar tema">dark_mode</button>
   </header>
 
-  <!-- HERO -->
-  <section id="hero" class="hero">
+  <!-- HERO: portada + avatar + nombre + descripción + info centrada dentro de la portada -->
+  <section id="hero" class="hero" aria-hidden="false">
     <div class="hero-cover">
       <img id="cover" class="cover-img" src="" alt="Portada" />
       <div class="cover-overlay"></div>
@@ -61,21 +63,18 @@
     </div>
   </section>
 
-  <!-- MURO -->
-  <main id="muro" class="muro">
-    <div id="ptr" class="ptr">
+  <!-- MURO: scroll dentro del elemento .muro (solo aquí se scrollea) -->
+  <main id="muro" class="muro" role="main" aria-label="Muro de publicaciones">
+    <div id="ptr" class="ptr" aria-hidden="true">
       <div class="ptr-inner">
         <span id="ptrIcon" class="material-symbols-outlined">expand_more</span>
         <span id="ptrText">Desliza para actualizar</span>
-        <div id="ptrSpinner" class="ptr-spinner"></div>
+        <div id="ptrSpinner" class="ptr-spinner" aria-hidden="true"></div>
       </div>
     </div>
 
     <div class="muro-top">
-      <h3 class="muro-title">
-        <span class="material-symbols-outlined">dynamic_feed</span>
-        Publicaciones
-      </h3>
+      <h3 class="muro-title"><span class="material-symbols-outlined">dynamic_feed</span> Publicaciones</h3>
     </div>
 
     <div id="posts" class="posts"></div>
