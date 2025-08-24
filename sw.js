@@ -1,5 +1,6 @@
-const CACHE = "perfil-cache-v1";
+const CACHE = "perfil-cache-v3";
 const ASSETS = [
+  "/",
   "index.html",
   "style.css",
   "script.js",
@@ -10,9 +11,11 @@ const ASSETS = [
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
 });
+
 self.addEventListener("activate", (e) => {
   e.waitUntil(caches.keys().then(keys => Promise.all(keys.map(k => k !== CACHE ? caches.delete(k) : null))));
 });
+
 self.addEventListener("fetch", (e) => {
   const url = new URL(e.request.url);
   if (url.pathname.endsWith("data.json")) {
