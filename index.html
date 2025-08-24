@@ -1,44 +1,92 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1.0,user-scalable=no" />
+  <title>Perfil PWA</title>
 
-<title>Mi Muro</title>
+  <!-- iOS PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-<!-- Material Symbols -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300" rel="stylesheet" />
+  <!-- Material Symbols (Outlined wght 300) -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300" rel="stylesheet" />
 
-<link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Side menu -->
+  <nav id="sideMenu" class="side-menu" aria-hidden="true">
+    <ul>
+      <li><a href="#">Inicio</a></li>
+      <li><a href="#">Mensajes</a></li>
+      <li><a href="#">Listas</a></li>
+      <li><a href="#">Configuración</a></li>
+    </ul>
+  </nav>
+  <div id="overlay" class="overlay" hidden></div>
 
-<!-- Navbar principal -->
-<header class="navbar">
-  <button class="menu-btn material-symbols-outlined">menu</button>
-  <h1 class="username">@yefry</h1>
-  <button id="themeToggle" class="material-symbols-outlined">light_mode</button>
-</header>
+  <!-- Navbar fija -->
+  <header class="navbar" id="navbar" role="banner" aria-label="Barra superior">
+    <button id="menuBtn" class="icon-btn material-symbols-outlined" aria-label="Abrir menú">menu</button>
 
-<!-- Portada -->
-<section class="cover">
-  <img src="portada.jpg" alt="Portada" class="cover-img">
-  <div class="profile-info">
-    <img src="avatar.jpg" alt="Avatar" class="avatar">
-    <h2>Yefry Sammir</h2>
-  </div>
-</section>
+    <div class="navbar-center" aria-hidden="false">
+      <span id="usernameTop" class="username">@usuario</span>
+      <span id="verifiedTop" class="material-symbols-outlined verified" aria-hidden="true">verified</span>
+    </div>
 
-<!-- Navbar de publicaciones -->
-<div class="sub-navbar">
-  <span>Publicaciones</span>
-</div>
+    <button id="themeToggle" class="icon-btn material-symbols-outlined" aria-label="Cambiar tema">dark_mode</button>
+  </header>
 
-<!-- Sección de publicaciones -->
-<main id="feed"></main>
+  <!-- HERO: portada + avatar + nombre + descripción + info (sin slider) -->
+  <section id="hero" class="hero" aria-hidden="false">
+    <div class="hero-cover">
+      <!-- id=cover es el elemento que usamos para aplicar parallax -->
+      <img id="cover" class="cover-img" src="" alt="Portada" />
+      <div class="cover-overlay"></div>
+    </div>
 
-<script src="script.js"></script>
+    <div class="hero-inner">
+      <div class="avatar-wrap">
+        <img id="avatar" class="avatar" src="" alt="Foto de perfil" />
+      </div>
+
+      <div class="perfil-text">
+        <h2 id="fullName" class="full-name">Nombre Apellido</h2>
+        <p id="bio" class="bio">Descripción breve del usuario.</p>
+      </div>
+
+      <!-- Info extra: separado en left (location+web) y right (social icons) -->
+      <div id="infoBox" class="info-box" aria-label="Información adicional">
+        <div id="infoLeft" class="info-left"></div>
+        <div id="infoRight" class="info-right"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Muro (éste es el contenedor fijo). Dentro existe .muro-scroll (el único que scrollea). -->
+  <main id="muro" class="muro" role="main" aria-label="Muro de publicaciones">
+    <div class="muro-scroll" id="muroScroll">
+      <!-- pull-to-refresh (controlado por JS sobre #muroScroll) -->
+      <div id="ptr" class="ptr" aria-hidden="true">
+        <div class="ptr-inner">
+          <span id="ptrIcon" class="material-symbols-outlined">expand_more</span>
+          <span id="ptrText">Desliza para actualizar</span>
+          <div id="ptrSpinner" class="ptr-spinner" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <!-- Título sticky (quedará bajo la navbar) -->
+      <div class="muro-top">
+        <h3 class="muro-title"><span class="material-symbols-outlined">dynamic_feed</span> Publicaciones</h3>
+      </div>
+
+      <!-- Contenedor con las publicaciones (contenido que se desplaza) -->
+      <div id="posts" class="posts"></div>
+    </div>
+  </main>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
