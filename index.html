@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-  <!-- Material Symbols (Outlined wght 300) -->
+  <!-- Material Symbols -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300" rel="stylesheet" />
 
   <link rel="manifest" href="manifest.json" />
@@ -28,19 +28,19 @@
   <div id="overlay" class="overlay" hidden></div>
 
   <!-- Navbar fija -->
-  <header class="navbar" id="navbar" role="banner" aria-label="Barra superior">
-    <button id="menuBtn" class="icon-btn material-symbols-outlined" aria-label="Abrir menú">menu</button>
+  <header class="navbar" id="navbar">
+    <button id="menuBtn" class="icon-btn material-symbols-outlined">menu</button>
 
-    <div class="navbar-center" aria-hidden="false">
+    <div class="navbar-center">
       <span id="usernameTop" class="username">@usuario</span>
-      <span id="verifiedTop" class="material-symbols-outlined verified" aria-hidden="true">verified</span>
+      <span id="verifiedTop" class="material-symbols-outlined verified">verified</span>
     </div>
 
-    <button id="themeToggle" class="icon-btn material-symbols-outlined" aria-label="Cambiar tema">dark_mode</button>
+    <button id="themeToggle" class="icon-btn material-symbols-outlined">dark_mode</button>
   </header>
 
-  <!-- HERO: portada + avatar + nombre + descripción + info centrada dentro de la portada -->
-  <section id="hero" class="hero" aria-hidden="false">
+  <!-- HERO (portada con toda la info dentro) -->
+  <section id="hero" class="hero">
     <div class="hero-cover">
       <img id="cover" class="cover-img" src="" alt="Portada" />
       <div class="cover-overlay"></div>
@@ -50,33 +50,26 @@
       <div class="avatar-wrap">
         <img id="avatar" class="avatar" src="" alt="Foto de perfil" />
       </div>
+      <h2 id="fullName" class="full-name">Nombre Apellido</h2>
+      <span class="user-line">
+        <span id="username" class="username">@usuario</span>
+        <span class="material-symbols-outlined verified">verified</span>
+      </span>
+      <p id="bio" class="bio">Descripción breve del usuario.</p>
 
-      <div class="perfil-box">
-        <h2 id="fullName" class="full-name">Nombre Apellido</h2>
-        <p id="bio" class="bio">Descripción breve del usuario.</p>
-
-        <div id="infoBox" class="info-box">
-          <div id="infoLeft" class="info-left"></div>
-          <div id="infoRight" class="info-right"></div>
-        </div>
+      <!-- Info extra -->
+      <div id="infoBox" class="info-box">
+        <div id="infoLeft" class="info-left"></div>
+        <div id="infoRight" class="info-right"></div>
       </div>
     </div>
   </section>
 
-  <!-- MURO: scroll dentro del elemento .muro (solo aquí se scrollea) -->
-  <main id="muro" class="muro" role="main" aria-label="Muro de publicaciones">
-    <div id="ptr" class="ptr" aria-hidden="true">
-      <div class="ptr-inner">
-        <span id="ptrIcon" class="material-symbols-outlined">expand_more</span>
-        <span id="ptrText">Desliza para actualizar</span>
-        <div id="ptrSpinner" class="ptr-spinner" aria-hidden="true"></div>
-      </div>
-    </div>
-
+  <!-- MURO -->
+  <main id="muro" class="muro">
     <div class="muro-top">
       <h3 class="muro-title"><span class="material-symbols-outlined">dynamic_feed</span> Publicaciones</h3>
     </div>
-
     <div id="posts" class="posts"></div>
   </main>
 
