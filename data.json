@@ -1,22 +1,22 @@
 {
-  "usuario": "@yefry",
-  "verificado": true,
-  "nombre": "Yefry Sammir",
-  "descripcion": "Apasionado de la tecnología y el diseño. Café ☕ y PWA 🚀",
-  "avatar": "https://i.pravatar.cc/300",
-  "portada": "https://picsum.photos/id/1015/1200/600",
-  "info": {
-    "ciudad": "Lima, Perú",
-    "web": "tusitio.example"
+  "profile": {
+    "username": "yefry",
+    "verified": true,
+    "name": "Yefry Sammir",
+    "bio": "Apasionado de la tecnología y el diseño. Café ☕ y PWA 🚀",
+    "avatar": "https://i.pravatar.cc/300",
+    "cover": "https://picsum.photos/id/1015/1200/600",
+    "location": "Lima, Perú",
+    "website": "https://tusitio.example",
+    "socials": [
+      { "type": "Instagram", "label": "Instagram", "url": "https://instagram.com/tuusuario" },
+      { "type": "TikTok", "label": "TikTok", "url": "https://tiktok.com/@tuusuario" },
+      { "type": "Facebook", "label": "Facebook", "url": "https://facebook.com/tuusuario" },
+      { "type": "Discord", "label": "Discord", "url": "https://discord.gg/tu-servidor" },
+      { "type": "Web", "label": "Web", "url": "https://tusitio.example" }
+    ]
   },
-  "socials": [
-    { "type": "Instagram", "label": "Instagram", "url": "https://instagram.com/tuusuario" },
-    { "type": "TikTok", "label": "TikTok", "url": "https://tiktok.com/@tuusuario" },
-    { "type": "Facebook", "label": "Facebook", "url": "https://facebook.com/tuusuario" },
-    { "type": "Discord", "label": "Discord", "url": "https://discord.gg/tu-servidor" },
-    { "type": "Web", "label": "Web", "url": "https://tusitio.example" }
-  ],
-  "publicaciones": [
+  "posts": [
     {
       "texto": "Probando parallax + blur + sticky navbar (estilo Twitter).",
       "fecha": "2025-08-23T18:15:00-05:00",
