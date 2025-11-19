@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MyMMO - Offline Prototype</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300" />
+</head>
+<body>
+  <div id="app">
+    <div id="left" class="panel">
+      <div id="launcher-root"></div>
+
+      <hr style="border:none;height:1px;background:rgba(255,255,255,0.03);margin:12px 0">
+
+      <div class="card">
+        <div class="space-between"><strong>Resumen</strong><button id="btn-delete" class="small">Borrar partida</button></div>
+        <div id="player-summary" style="margin-top:8px"></div>
+      </div>
+
+      <div style="margin-top:12px" class="card">
+        <strong>Registro</strong>
+        <div id="log"></div>
+      </div>
+    </div>
+
+    <div id="main">
+      <div id="ui-root" class="panel" style="width:100%"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    // IMPORTS principales (todos en base a tu estructura)
+    import { Launcher } from './engine/launcher.js';
+    import { PlayerSystem } from './engine/playerSystem.js';
+    import { SaveSystem } from './engine/saveSystem.js';
+    import { UIHome } from './ui/ui.home.js';
+    import { MapUI } from './ui/ui.map.js';
+
+    // Registro service worker opcional
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker?.register('./service-worker.js').catch(()=>{/* no bloquear */});
+    }
+
+    const launcherRoot = document.getElementById('launcher-root');
+    const uiRoot = document.getElementById('ui-root');
+    const logEl = document.getElementById('log');
+
+    function log(msg){ const p=document.createElement('div'); p.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`; logEl.prepend(p); }
+
+    // Si hay partida guardada, cargamos y vamos al mapa directamente
+    const loaded = PlayerSystem.autoLoadIfExists();
+    if (loaded) {
+      const player = PlayerSystem.getInstance();
+      MapUI.render(uiRoot, { player, log });
+      log('Partida cargada automáticamente.');
+      refreshSummary();
+    } else {
+      // mostrar launcher en launcher-root
+      Launcher.render(launcherRoot, {
+        onStart: () => {
+          const player = PlayerSystem.getInstance();
+          MapUI.render(uiRoot, { player, log });
+          log('Juego iniciado.');
+          refreshSummary();
+        }
+      });
+    }
+
+    document.getElementById('btn-delete').onclick = async () => {
+      const ok = confirm('¿Seguro que quieres borrar la partida? Esto requiere otra confirmación.');
+      if(!ok) return;
+      const ok2 = confirm('ESTAS SEGURO 100% — Esto borrará tu partida guardada permanentemente.');
+      if(!ok2) return;
+      PlayerSystem.clearSave();
+      location.reload();
+    };
+
+    function refreshSummary(){
+      const player = PlayerSystem.getInstance();
+      const el = document.getElementById('player-summary');
+      const p = player.getProfile();
+      el.innerHTML = `<div style="margin-bottom:6px"><strong>${p.name}</strong> • ${p.gender ? p.gender:''}</div>
+        <div>Nivel: ${p.level} • XP: ${p.xp}</div>
+        <div>Monedas: ${p.currency}</div>
+        <div style="margin-top:6px"><strong>Equipo</strong><div style="font-size:13px">${p.team.length ? p.team.map(t=>t.name+' (LV'+t.level+')').join(', ') : '— vacío —'}</div></div>`;
+    }
+
+    window.addEventListener('player-updated', refreshSummary);
+  </script>
+</body>
+</html>
