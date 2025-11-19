@@ -1,0 +1,11 @@
+[
+  {
+    "id": "leader_lina",
+    "name": "Lina la Exploradora",
+    "team": [
+      { "creatureId": "emberfox", "level": 8 },
+      { "creatureId": "crystal_drake", "level": 10 }
+    ],
+    "bio": "Líder local y experta en rutas peligrosas."
+  }
+]

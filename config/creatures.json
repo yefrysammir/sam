@@ -1,0 +1,38 @@
+[
+  {
+    "id": "crystal_drake",
+    "name": "Drako Cristal",
+    "baseHP": 60,
+    "baseAttack": 18,
+    "baseDefense": 10,
+    "element": "ice",
+    "captureRate": 0.25,
+    "icon": "assets/creatures/crystal_drake.png",
+    "expYield": 70,
+    "specialPossible": true,
+    "moves": [
+      { "id":"ice_shard","name":"Fragmento Hielo","type":"ice","power":20 },
+      { "id":"bite","name":"Mordisco","type":"normal","power":15 },
+      { "id":"glare","name":"Deslumbrar","type":"ice","power":10 },
+      { "id":"roar","name":"Rugido","type":"normal","power":8 }
+    ]
+  },
+  {
+    "id": "emberfox",
+    "name": "Zorro Ember",
+    "baseHP": 45,
+    "baseAttack": 14,
+    "baseDefense": 8,
+    "element": "fire",
+    "captureRate": 0.5,
+    "icon": "assets/creatures/emberfox.png",
+    "expYield": 45,
+    "specialPossible": true,
+    "moves": [
+      { "id":"flame_tail","name":"Cola de Fuego","type":"fire","power":18 },
+      { "id":"quick_jump","name":"Salto Rápido","type":"normal","power":10 },
+      { "id":"ember","name":"Ascua","type":"fire","power":14 },
+      { "id":"scratch","name":"Arañazo","type":"normal","power":12 }
+    ]
+  }
+]

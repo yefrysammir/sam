@@ -1,0 +1,4 @@
+[
+  { "id": "potion", "name": "Poción", "type": "consumable", "effect": { "hpRestore": 30 }, "price": 50, "icon": "assets/icons/potion.png" },
+  { "id": "great_ball", "name": "Gran Bola", "type": "capture", "effect": { "multiplier": 1.6 }, "price": 200, "icon": "assets/icons/great_ball.png" }
+]

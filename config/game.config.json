@@ -1,0 +1,7 @@
+{
+  "title": "MyMMO Prototype",
+  "maxTeamSize": 3,
+  "captureBaseRate": 0.4,
+  "levelXPFactor": 1.5,
+  "startingCurrency": 500
+}
