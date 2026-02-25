@@ -1,15 +1,14 @@
-up to date, audited 593 packages in 3s
+TypeError: (0 , _hooks_useGameStore__WEBPACK_IMPORTED_MODULE_2__.useGameStore) is not a function
 
-165 packages are looking for funding
-  run `npm fund` for details
+Source
+src/app/page.tsx (8:58) @ useGameStore
 
-7 vulnerabilities (6 high, 1 critical)
-
-To address issues that do not require attention, run:
-  npm audit fix
-
-To address all issues (including breaking changes), run:
-  npm audit fix --force
-
-Run `npm audit` for details.
-@yefrysammir ➜ /workspaces/pokecrake (main) $ 
+   6 |
+   7 | export default function Home() {
+>  8 |   const { user, token, setUser, setToken } = useGameStore();
+     |                                                          ^
+   9 |
+  10 |   useEffect(() => {
+  11 |     // Restore session from localStorage
+Call Stack
+Show collapsed frames
