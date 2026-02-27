@@ -1,14 +1,5 @@
-TypeError: (0 , _hooks_useGameStore__WEBPACK_IMPORTED_MODULE_2__.useGameStore) is not a function
+echo "FRONTEND_URL=https://stunning-system-5gpqjwxpp4qvh4449-3000.app.github.dev" >> .env
 
-Source
-src/app/page.tsx (8:58) @ useGameStore
-
-   6 |
-   7 | export default function Home() {
->  8 |   const { user, token, setUser, setToken } = useGameStore();
-     |                                                          ^
-   9 |
-  10 |   useEffect(() => {
-  11 |     // Restore session from localStorage
-Call Stack
-Show collapsed frames
+Ctrl+C
+pkill -9 node
+npm run dev:all
