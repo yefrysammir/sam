@@ -1,5 +1,3 @@
-echo "FRONTEND_URL=https://stunning-system-5gpqjwxpp4qvh4449-3000.app.github.dev" >> .env
+origin: ['http://localhost:3000', 'https://stunning-system-5gpqjwxpp4qvh4449-3000.app.github.dev'],
 
-Ctrl+C
-pkill -9 node
-npm run dev:all
+origin: ['http://localhost:3000', 'https://stunning-system-5gpqjwxpp4qvh4449-3000.app.github.dev'],
